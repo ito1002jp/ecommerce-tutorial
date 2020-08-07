@@ -5,6 +5,8 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "^14.1.1",
+    "@contentful/rich-text-types": "^14.1.1",
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "emotion-theming": "^10.0.27",
@@ -15,6 +17,7 @@
     "gatsby-plugin-offline": "^3.2.21",
     "gatsby-plugin-react-helmet": "^3.3.10",
     "gatsby-plugin-sharp": "^2.6.24",
+    "gatsby-source-contentful": "^2.3.35",
     "gatsby-source-filesystem": "^2.3.23",
     "gatsby-transformer-sharp": "^2.5.12",
     "prop-types": "^15.7.2",
