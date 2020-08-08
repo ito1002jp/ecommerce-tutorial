@@ -2,11 +2,19 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 });
 
+let URL;
+if (process.env.NODE_ENV === 'production') {
+  URL = 'https://gatbsy-ecommerce-demo.netlify.com';
+} else {
+  URL = 'http://localhost:8000';
+}
+
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `Gatsby Ecommerce Demo`,
+    description: `Your next ecommerce Gatsby site powered with Contentful and Snipcart.`,
+    author: `tesshu`,
+    siteUrl: URL
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -43,6 +51,15 @@ module.exports = {
        spaceId: process.env.CONTENTFUL_ID,
        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
        },
-   },
+    },
+    {
+      resolve: 'gatsby-plugin-snipcart',
+      options: {
+        apiKey: process.env.SNIPCART_API,
+        autopop: true,
+        js: 'https://cdn.snipcart.com/themes/v3.0.0/default/snipcart.js',
+        styles: 'https://cdn.snipcart.com/themes/v3.0.0/default/snipcart.css',
+      },
+    },
   ],
 }
