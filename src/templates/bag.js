@@ -35,6 +35,11 @@ export const query = graphql`
       rating
       color
     }
+    site {
+      siteMetadata {
+        siteUrl
+      }
+    }
   }
 `;
 
@@ -68,7 +73,7 @@ const HyperLink = ({ children }) => (
 );
 
 
-const BagTemplate = ({ data: { item } }) => {
+const BagTemplate = ({ data: { item, site } }) => {
 // modifying the options
 const options = {
    renderMark: {
@@ -91,6 +96,16 @@ return (
     <StyledImage fluid={item.mainImage.fluid} />
     {/* render the rich text format description */}
     <main>{documentToReactComponents(item.description.json, options)}</main>
+    <button
+        className='snipcart-add-item'
+        data-item-id={item.id}
+        data-item-name={item.productName}
+        data-item-image={item.mainImage.fluid.src}
+        data-item-price={item.discountPrice ? item.discountPrice : item.price}
+        data-item-url={`${site.siteMetadata.siteUrl}/products/${item.productSlug}`}
+      >
+        Add to Cart
+    </button>
   </Layout>
 );
 };
