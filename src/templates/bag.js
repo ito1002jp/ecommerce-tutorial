@@ -103,6 +103,8 @@ return (
         data-item-image={item.mainImage.fluid.src}
         data-item-price={item.discountPrice ? item.discountPrice : item.price}
         data-item-url={`${site.siteMetadata.siteUrl}/products/${item.productSlug}`}
+        data-item-custom1-name="Size"
+        data-item-custom1-options="6|6.5|7|7.5|8|8.5|9"
       >
         Add to Cart
     </button>
