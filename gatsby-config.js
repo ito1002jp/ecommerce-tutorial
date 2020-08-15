@@ -59,5 +59,12 @@ module.exports = {
         autopop: false
       },
     },
+      {
+        resolve: `gatsby-source-shopify`,
+        options: {
+          shopName: process.env.SHOPIFY_SHOP_NAME,
+          accessToken: process.env.SHOPIFY_ACCESS_TOKEN,
+        },
+      },
   ],
 }
