@@ -1,51 +1,42 @@
 import React from 'react';
 import { Link, graphql } from 'gatsby';
-import styled from '@emotion/styled';
-import Image from 'gatsby-image';
 import Layout from '../components/layout';
 
 export const query = graphql`
   {
-    allItems: allContentfulFashionTwoBags {
-      nodes {
-        id
-        productName
-        productSlug
-        shortDescription
-        price
-        discountPrice
-        tags
-        rating
-        displayBadge
-        mainImage {
-          fluid(quality: 90, maxWidth: 300) {
-            ...GatsbyContentfulFluid_withWebp
+    allShopifyProduct(sort: { fields: [title] }) {
+      edges {
+        node {
+          title
+          shopifyId
+          description
+          handle
+          priceRange {
+            minVariantPrice {
+              amount
+            }
           }
         }
       }
     }
   }
-`;
-
-const StyledImage = styled(Image)`
-  width: 20rem;
-  height: 20rem;
-`;
-
+`
 const IndexPage = ({data}) => {
-  const products = data.allItems.nodes;
   return(
   <Layout>
-    {products.map(product => (
-        <Link key={product.productSlug} to={`/products/${product.productSlug}`}>
-          <h1>{product.productName}</h1>
-          <div>$ {product.price} USD</div>
-          <div>
-            <StyledImage fluid={product.mainImage.fluid} />
-          </div>
-        </Link>
+  <h1>Products</h1>
+  <ul>
+    {data.allShopifyProduct.edges.map(({ node }) => (
+      <li key={node.shopifyId}>
+        <h3>
+          <Link to={`/product/${node.handle}`}>{node.title}</Link>
+          {" - "}${node.priceRange.minVariantPrice.amount}
+        </h3>
+        <p>{node.description}</p>
+      </li>
     ))}
-  </Layout>
+  </ul>
+</Layout>
 )}
 
 export default IndexPage

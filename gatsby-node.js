@@ -1,29 +1,42 @@
-const path = require('path');
-
-// use gatsby create pages api and query for all product slugs
-exports.createPages = async ({ actions, graphql }) => {
-    const { createPage } = actions;
-    const { data } = await graphql(`
-      {
-        allBags: allContentfulFashionTwoBags {
-          nodes {
-            productSlug
+const path = require(`path`)
+exports.createPages = async ({ graphql, actions }) => {
+  const { createPage } = actions
+  // Query for all products in Shopify
+  const result = await graphql(`
+    query {
+      allShopifyProduct(sort: { fields: [title] }) {
+        edges {
+          node {
+            title
+            images {
+              originalSrc
+            }
+            shopifyId
+            handle
+            description
+            availableForSale
+            priceRange {
+              maxVariantPrice {
+                amount
+              }
+              minVariantPrice {
+                amount
+              }
+            }
           }
         }
       }
-    `);
-
-    // create page for each product and list
-    // them all in /products/:productSlug 
-    data.allBags.nodes.forEach(item => {
-      createPage({
-        path: `products/${item.productSlug}`,
-        component: path.resolve('./src/templates/Bag.js'),
-        context: {
-           // Data passed to context is available
-           // in page queries as GraphQL variables.
-          slug: item.productSlug,
-        },
-      });
-    });
-};
+    }
+  `)
+  // Iterate over all products and create a new page using a template
+  // The product "handle" is generated automatically by Shopify
+  result.data.allShopifyProduct.edges.forEach(({ node }) => {
+    createPage({
+      path: `/product/${node.handle}`,
+      component: path.resolve(`./src/templates/product.js`),
+      context: {
+        product: node,
+      },
+    })
+  })
+}
